@@ -1,0 +1,14 @@
+error[E0119]: conflicting implementations of trait `Select` for type `fn(u16)`
+  --> $DIR/higher-ranked-alias-overlap-issue-161404.rs:36:1
+   |
+LL | / impl<X> Select for X
+LL | | where
+LL | |     for<'d> &'d Wrap<X>: Indirect,
+   | |__________________________________- first implementation here
+...
+LL |   impl<Z: Mark> Select for Z {
+   |   ^^^^^^^^^^^^^^^^^^^^^^^^^^ conflicting implementation for `fn(u16)`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0119`.

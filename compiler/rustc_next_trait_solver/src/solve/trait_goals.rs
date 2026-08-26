@@ -99,7 +99,11 @@ where
         ecx.probe_trait_candidate(CandidateSource::Impl(impl_def_id)).enter(|ecx| {
             let impl_args = ecx.fresh_args_for_item(impl_def_id.into());
             ecx.record_impl_args(impl_args);
-            let impl_trait_ref = impl_trait_ref.instantiate(cx, impl_args).skip_norm_wip();
+            let impl_trait_ref = ecx.normalize(
+                GoalSource::Misc,
+                goal.param_env,
+                impl_trait_ref.instantiate(cx, impl_args),
+            )?;
 
             ecx.eq(goal.param_env, goal_trait_ref, impl_trait_ref)?;
             let where_clause_bounds = cx
